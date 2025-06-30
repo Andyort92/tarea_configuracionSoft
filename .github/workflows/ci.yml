@@ -2,7 +2,7 @@ name: CI - Validación Contador Web
 
 on:
   push:
-    branches: [main]  # Se ejecuta en cada push a main
+    branches: [main]
 
 jobs:
   build:
@@ -12,5 +12,14 @@ jobs:
     - name: Checkout del repositorio
       uses: actions/checkout@v3
 
-    - name: Simular validación de código
-      run: echo "Todo correcto: Archivos encontrados y estructura válida."
+    - name: Validar existencia de archivos esenciales
+      run: |
+        if [ -f index.html ] && [ -f style.css ] && [ -f main.js ]; then
+          echo "✅ Todos los archivos esenciales están presentes."
+        else
+          echo "❌ Error: Faltan archivos esenciales."
+          exit 1
+        fi
+
+    - name: Finalización exitosa
+      run: echo "🚀 Validación completada con éxito."
